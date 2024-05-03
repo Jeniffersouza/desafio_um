@@ -16,7 +16,6 @@
             flex-direction: column;
             background-color: rgb(234, 236, 236);
         }
-
         h1 {
             margin-bottom: 20px;
         }
@@ -39,6 +38,9 @@
             border: 1px solid #ccc;
             border-radius: 10px;
         }
+        p{
+            font-size: 12px;
+        }
 
         button {
             width: 101%;
@@ -52,25 +54,38 @@
         }
 
         button:hover {
-            background-color: #8f638d;
+            Background-color: #8f638d;
         }
 
-        #vagas-list {
-            margin-top: 20px;
-            max-width: 400px;
+        .vagas-container {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        #vagas-disponiveis,
+        #vagas-ocupadas {
+            width: 48%;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
 
-        #vagas-list div {
+        #vagas-disponiveis h2,
+        #vagas-ocupadas h2 {
+            margin-top: 0;
+        }
+
+        #vagas-disponiveis div,
+        #vagas-ocupadas div {
             margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1> Reservar de Vaga</h1>
+    <h1> Reserva de Vagas</h1>
     <form id="reserva-form">
         <label for="placa">Placa do Veículo:</label>
         <input type="text" id="placa" name="placa" required><br>
@@ -91,19 +106,66 @@
         <input type="text" id="cor" name="cor" required><br>
 
         <label for="vaga">Número da Vaga:</label>
+        <p> Por favor, inserir um número que está disponivel!</p>
         <input type="text" id="vaga" name="vaga" required><br>
 
         <button type="submit">Salvar</button>
     </form>
 
-    <hr>
-
-    <h1> Vagas cadastradas</h1>
-    <div id="vagas-list"></div>
+    <div class="vagas-container">
+        <div id="vagas-disponiveis">
+            <h2>Vagas Disponíveis</h2>
+            <div id="disponiveis-list"></div>
+        </div>
+        <div id="vagas-ocupadas">
+            <h2>Vagas Ocupadas</h2>
+            <div id="ocupadas-list"></div>
+        </div>
+    </div>
 
     <script>
         // Array para armazenar as vagas cadastradas
         var vagasCadastradas = [];
+        // Array para armazenar as vagas disponíveis
+        var vagasDisponiveis = [];
+
+        // Função para atualizar a lista de vagas disponíveis
+        function atualizarListaDisponiveis() {
+            var disponiveisList = document.getElementById("disponiveis-list");
+
+            // Limpa o conteúdo anterior da lista
+            disponiveisList.innerHTML = "";
+
+            // Adiciona as vagas disponíveis à lista
+            vagasDisponiveis.forEach(function(vaga) {
+                var vagaItem = document.createElement("div");
+                vagaItem.textContent = "Vaga: " + vaga;
+                disponiveisList.appendChild(vagaItem);
+            });
+        }
+
+        // Função para atualizar a lista de vagas ocupadas
+        function atualizarListaOcupadas() {
+            var ocupadasList = document.getElementById("ocupadas-list");
+
+            // Limpa o conteúdo anterior da lista
+            ocupadasList.innerHTML = "";
+
+            // Adiciona as vagas ocupadas à lista
+            vagasCadastradas.forEach(function(vaga) {
+                var vagaItem = document.createElement("div");
+                vagaItem.textContent = "Vaga: " + vaga.vaga + " - " + vaga.placa;
+                ocupadasList.appendChild(vagaItem);
+            });
+        }
+
+        // Ao carregar a página, definir vagas disponíveis
+        window.onload = function() {
+            for (var i = 1; i <= 4; i++) {
+                vagasDisponiveis.push(i);
+            }
+            atualizarListaDisponiveis();
+        };
 
         document.getElementById("reserva-form").addEventListener("submit", function(event) {
             event.preventDefault(); // Impede o envio padrão do formulário
@@ -117,6 +179,25 @@
             var cor = document.getElementById("cor").value;
             var vaga = document.getElementById("vaga").value;
 
+            // Exibe os valores no console
+            console.log("Placa: " + placa);
+            console.log("Nome: " + nome);
+            console.log("Apartamento: " + apartamento);
+            console.log("Bloco: " + bloco);
+            console.log("Modelo: " + modelo);
+            console.log("Cor: " + cor);
+            console.log("Vaga: " + vaga);
+
+            // Exibe mensagem de sucesso
+            alert("Cadastro realizado com sucesso!");
+
+            // Remove a vaga selecionada da lista de vagas disponíveis
+            var index = vagasDisponiveis.indexOf(parseInt(vaga));
+            if (index !== -1) {
+                vagasDisponiveis.splice(index, 1);
+                atualizarListaDisponiveis();
+            }
+
             // Adiciona as informações à array de vagas cadastradas
             vagasCadastradas.push({
                 placa: placa,
@@ -127,37 +208,14 @@
                 cor: cor,
                 vaga: vaga
             });
-            // Exibe os valores no console
-            console.log("Placa: " + placa);
-            console.log("Nome: " + nome);
-            console.log("Apartamento: " + apartamento);
-            console.log("Bloco: " + bloco);
-            console.log("Modelo: " + modelo);
-            console.log("Cor: " + cor);
-            console.log("Vaga: " + vaga);
 
             // Limpa o formulário
             document.getElementById("reserva-form").reset();
-             // Exibe mensagem de sucesso
-             alert("Cadastro realizado com sucesso!");
-            // Atualiza a lista de vagas
-            atualizarListaVagas();
+
+
+            // Atualiza a lista de vagas ocupadas
+            atualizarListaOcupadas();
         });
-
-        // Função para atualizar a lista de vagas
-        function atualizarListaVagas() {
-            var vagasList = document.getElementById("vagas-list");
-
-            // Limpa o conteúdo anterior da lista
-            vagasList.innerHTML = "";
-
-            // Adiciona as vagas cadastradas à lista
-            vagasCadastradas.forEach(function(vaga, index) {
-                var vagaItem = document.createElement("div");
-                vagaItem.textContent = "Vaga " + (index + 1) + ": " + vaga.vaga + " - " + vaga.placa + "- PROPRIETÁRIO: " + vaga.nome;
-                vagasList.appendChild(vagaItem);
-            });
-        }
     </script>
 </body>
 </html>
