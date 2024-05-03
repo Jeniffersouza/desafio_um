@@ -36,4 +36,4 @@ document.getElementById('cadastroForm').addEventListener('submit', function(even
     console.log('Bloco do Apartamento:', bloco);
     console.log('Modelo do Veículo:', modelo);
     console.log('Cor do Veículo:', cor);
-    console.log('Número da Vaga
+    console.log('Número da Vaga:', vaga);
