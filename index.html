@@ -4,89 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Estacionamento</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #vagas-list {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Controle de Estacionamento</h1>
+    <h1>Cadastro de Reserva</h1>
+    <form id="reserva-form">
+        <label for="placa">Placa do Veículo:</label>
+        <input type="text" id="placa" name="placa" required><br>
 
-    <button onclick="openCadastro()">Cadastrar Reserva</button>
-    <button onclick="openListagem()">Listar Vagas</button>
+        <label for="nome">Nome do Proprietário:</label>
+        <input type="text" id="nome" name="nome" required><br>
 
-    <!-- Modal de Cadastro -->
-    <div id="cadastroModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeCadastro()">&times;</span>
-            <h2>Cadastro de Reserva</h2>
-            <form id="cadastroForm">
-                <label for="placa">Placa do Veículo:</label>
-                <input type="text" id="placa" required><br>
-                <label for="nome">Nome do Proprietário:</label>
-                <input type="text" id="nome" required><br>
-                <label for="apartamento">Número do Apartamento:</label>
-                <input type="text" id="apartamento" required><br>
-                <label for="bloco">Bloco do Apartamento:</label>
-                <input type="text" id="bloco" required><br>
-                <label for="modelo">Modelo do Veículo:</label>
-                <input type="text" id="modelo" required><br>
-                <label for="cor">Cor do Veículo:</label>
-                <input type="text" id="cor" required><br>
-                <label for="vaga">Número da Vaga de Estacionamento:</label>
-                <input type="text" id="vaga" required><br>
-                <button type="submit">Salvar</button>
-            </form>
-        </div>
-    </div>
+        <label for="apartamento">Número do Apartamento:</label>
+        <input type="text" id="apartamento" name="apartamento" required><br>
 
-    <!-- Modal de Listagem -->
-    <div id="listagemModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeListagem()">&times;</span>
-            <h2>Listagem de Vagas</h2>
-            <p>Aqui você pode listar as vagas cadastradas.</p>
-        </div>
-    </div>
+        <label for="bloco">Bloco do Apartamento:</label>
+        <input type="text" id="bloco" name="bloco" required><br>
+
+        <label for="modelo">Modelo do Veículo:</label>
+        <input type="text" id="modelo" name="modelo" required><br>
+
+        <label for="cor">Cor do Veículo:</label>
+        <input type="text" id="cor" name="cor" required><br>
+
+        <label for="vaga">Número da Vaga:</label>
+        <input type="text" id="vaga" name="vaga" required><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <hr>
+
+    <h1>Listar Vagas</h1>
+    <div id="vagas-list"></div>
 
     <script>
-        // Funções para abrir e fechar o modal de cadastro
-    function openCadastro() {
-        document.getElementById('cadastroModal').style.display = 'block';
-    }
-    
-    function closeCadastro() {
-        document.getElementById('cadastroModal').style.display = 'none';
-    }
-    
-    // Funções para abrir e fechar o modal de listagem
-    function openListagem() {
-        document.getElementById('listagemModal').style.display = 'block';
-    }
-    
-    function closeListagem() {
-        document.getElementById('listagemModal').style.display = 'none';
-    }
+        document.getElementById("reserva-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
 
-    // Captura o formulário de cadastro e adiciona um listener para o evento submit
-    document.getElementById('cadastroForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita o envio do formulário
+            // Obtém os valores do formulário
+            var placa = document.getElementById("placa").value;
+            var nome = document.getElementById("nome").value;
+            var apartamento = document.getElementById("apartamento").value;
+            var bloco = document.getElementById("bloco").value;
+            var modelo = document.getElementById("modelo").value;
+            var cor = document.getElementById("cor").value;
+            var vaga = document.getElementById("vaga").value;
 
-    // Captura os valores dos campos do formulário
-    var placa = document.getElementById('placa').value;
-    var nome = document.getElementById('nome').value;
-    var apartamento = document.getElementById('apartamento').value;
-    var bloco = document.getElementById('bloco').value;
-    var modelo = document.getElementById('modelo').value;
-    var cor = document.getElementById('cor').value;
-    var vaga = document.getElementById('vaga').value;
+            // Exibe os valores no console
+            console.log("Placa: " + placa);
+            console.log("Nome: " + nome);
+            console.log("Apartamento: " + apartamento);
+            console.log("Bloco: " + bloco);
+            console.log("Modelo: " + modelo);
+            console.log("Cor: " + cor);
+            console.log("Vaga: " + vaga);
 
-    // Exibe os valores no console
-    console.log('Placa do Veículo:', placa);
-    console.log('Nome do Proprietário:', nome);
-    console.log('Número do Apartamento:', apartamento);
-    console.log('Bloco do Apartamento:', bloco);
-    console.log('Modelo do Veículo:', modelo);
-    console.log('Cor do Veículo:', cor);
-    console.log('Número da Vaga:', vaga);
-
+            // Exibe mensagem de sucesso
+            alert("Cadastro realizado com sucesso!");
+        });
     </script>
 </body>
 </html>
